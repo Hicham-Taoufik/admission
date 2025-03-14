@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Admission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E8F1FA;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 40%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            margin: auto;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Formulaire d'Admission</h1>
+
+        <form id="admissionForm">
+            <label>Nom et Prénom:</label>
+            <input type="text" id="name" required>
+
+            <label>Numéro d'Identification (CIN):</label>
+            <input type="text" id="cin" required>
+
+            <label>Adresse:</label>
+            <textarea id="address" required></textarea>
+
+            <label>Téléphone:</label>
+            <input type="text" id="phone" required>
+
+            <label>Date de Naissance:</label>
+            <input type="date" id="dob" required>
+
+            <label>Motif de Consultation:</label>
+            <select id="consultation">
+                <option value="Consultation">Consultation</option>
+                <option value="Urgence">Urgence</option>
+                <option value="Suivi Médical">Suivi Médical</option>
+            </select>
+
+            <button type="submit">Soumettre</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("admissionForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Capture Form Data
+            const patientData = {
+                name: document.getElementById("name").value,
+                cin: document.getElementById("cin").value,
+                address: document.getElementById("address").value,
+                phone: document.getElementById("phone").value,
+                dob: document.getElementById("dob").value,
+                consultation: document.getElementById("consultation").value
+            };
+
+            // Send Data to n8n Webhook
+            fetch("https://workflows.aphelionxinnovations.com/webhook-test/admission", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(patientData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Patient enregistré avec succès !");
+                document.getElementById("admissionForm").reset(); // Reset form
+            })
+            .catch(error => {
+                console.error("Erreur:", error);
+                alert("Échec de l'enregistrement du patient.");
+            });
+        });
+    </script>
+
+</body>
+</html>
