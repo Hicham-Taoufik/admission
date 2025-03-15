@@ -49,7 +49,6 @@
             background: darkgreen;
         }
         .hidden { display: none; }
-        img { margin-top: 20px; max-width: 200px; }
     </style>
 </head>
 <body>
@@ -83,11 +82,8 @@
             <button type="submit">Soumettre</button>
         </form>
 
-        <div id="qrSection" class="hidden">
-            <h3>QR Code du Patient</h3>
-            <img id="qrCode" src="" alt="QR Code"><br>
-            <button onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
-        </div>
+        <button id="printButton" class="hidden" onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
+        <img id="qrCode" class="hidden" src="" alt="QR Code">
     </div>
 
     <script>
@@ -116,7 +112,7 @@
                 let qrCodeImage = document.getElementById("qrCode");
                 
                 qrCodeImage.onload = function() {
-                    document.getElementById("qrSection").classList.remove("hidden");
+                    document.getElementById("printButton").classList.remove("hidden"); 
                 };
 
                 qrCodeImage.src = qrURL;
