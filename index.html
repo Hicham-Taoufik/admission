@@ -48,6 +48,8 @@
         button:hover {
             background: darkgreen;
         }
+        .hidden { display: none; }
+        img { margin-top: 20px; max-width: 200px; }
     </style>
 </head>
 <body>
@@ -80,13 +82,18 @@
 
             <button type="submit">Soumettre</button>
         </form>
+
+        <div id="qrSection" class="hidden">
+            <h3>QR Code du Patient</h3>
+            <img id="qrCode" src="" alt="QR Code"><br>
+            <button onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
+        </div>
     </div>
 
     <script>
         document.getElementById("admissionForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Capture Form Data
+            event.preventDefault();
+            
             const patientData = {
                 name: document.getElementById("name").value,
                 cin: document.getElementById("cin").value,
@@ -96,24 +103,36 @@
                 consultation: document.getElementById("consultation").value
             };
 
-            // Send Data to n8n Webhook
             fetch("https://workflows.aphelionxinnovations.com/webhook-test/admission", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(patientData)
             })
             .then(response => response.json())
             .then(data => {
                 alert("Patient enregistré avec succès !");
-                document.getElementById("admissionForm").reset(); // Reset form
+                
+                let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${patientData.cin}`;
+                document.getElementById("qrCode").src = qrURL;
+                document.getElementById("qrSection").classList.remove("hidden");
+                
+                document.getElementById("admissionForm").reset();
             })
             .catch(error => {
                 console.error("Erreur:", error);
                 alert("Échec de l'enregistrement du patient.");
             });
         });
+
+        function printQRCode() {
+            let printWindow = window.open('', '', 'width=400,height=400');
+            printWindow.document.write('<html><head><title>Imprimer QR Code</title></head><body>');
+            printWindow.document.write('<h3>QR Code du Patient</h3>');
+            printWindow.document.write('<img src="' + document.getElementById("qrCode").src + '">');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
     </script>
 
 </body>
