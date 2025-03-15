@@ -83,6 +83,7 @@
             <button type="submit">Soumettre</button>
         </form>
 
+        <!-- Section for QR Code and Print Button -->
         <div id="qrSection" class="hidden">
             <h3>QR Code du Patient</h3>
             <img id="qrCode" src="" alt="QR Code"><br>
@@ -103,6 +104,7 @@
                 consultation: document.getElementById("consultation").value
             };
 
+            // Send data to n8n Webhook
             fetch("https://workflows.aphelionxinnovations.com/webhook-test/admission", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -112,7 +114,8 @@
             .then(data => {
                 alert("Patient enregistré avec succès !");
                 
-                let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(patientData.cin)}`;
+                // Generate QR Code
+                let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${patientData.cin}`;
                 document.getElementById("qrCode").src = qrURL;
                 document.getElementById("qrSection").classList.remove("hidden");
                 
@@ -124,14 +127,35 @@
             });
         });
 
+        // Function to Print the QR Code
         function printQRCode() {
-            let printWindow = window.open('', '', 'width=400,height=400');
-            printWindow.document.write('<html><head><title>Imprimer QR Code</title></head><body>');
-            printWindow.document.write('<h3>QR Code du Patient</h3>');
-            printWindow.document.write('<img src="' + document.getElementById("qrCode").src + '">');
-            printWindow.document.write('</body></html>');
+            let qrCodeSrc = document.getElementById("qrCode").src;
+            
+            if (!qrCodeSrc || qrCodeSrc === "") {
+                alert("QR Code non généré !");
+                return;
+            }
+
+            let printWindow = window.open('', '', 'width=600,height=600');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Imprimer QR Code</title>
+                    <style>
+                        body { text-align: center; font-family: Arial, sans-serif; }
+                        img { max-width: 300px; margin-top: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <h2>QR Code du Patient</h2>
+                    <img src="${qrCodeSrc}" alt="QR Code">
+                    <script>
+                        window.onload = function() { window.print(); }
+                    </script>
+                </body>
+                </html>
+            `);
             printWindow.document.close();
-            printWindow.print();
         }
     </script>
 
