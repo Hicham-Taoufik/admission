@@ -112,7 +112,7 @@
             .then(data => {
                 alert("Patient enregistré avec succès !");
                 
-                let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${patientData.cin}`;
+                let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(patientData.cin)}`;
                 document.getElementById("qrCode").src = qrURL;
                 document.getElementById("qrSection").classList.remove("hidden");
                 
