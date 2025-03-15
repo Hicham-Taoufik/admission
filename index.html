@@ -5,56 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire d'Admission</title>
     <style>
+        /* General Page Styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #E8F1FA;
+            font-family: 'Arial', sans-serif;
+            background: #f4f7fc;
             text-align: center;
             margin: 0;
             padding: 0;
         }
+
+        /* Form Container */
         .container {
-            width: 40%;
+            width: 90%;
+            max-width: 500px;
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
             margin: auto;
             margin-top: 50px;
         }
+
         h1 {
-            color: #333;
+            color: #2C3E50;
+            font-size: 22px;
+            margin-bottom: 20px;
         }
+
+        /* Input Fields */
         label {
             font-weight: bold;
             display: block;
             text-align: left;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
         }
+
         input, textarea, select {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        button {
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+        }
+
+        /* Submit and Print Buttons */
+        .btn {
             width: 100%;
-            padding: 10px;
-            background: green;
-            color: white;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: 0.3s;
         }
-        button:hover {
-            background: darkgreen;
+
+        .btn-submit {
+            background: #27ae60;
+            color: white;
         }
-        .hidden { display: none; }
+
+        .btn-submit:hover {
+            background: #219150;
+        }
+
+        .btn-print {
+            background: #2980b9;
+            color: white;
+            display: none;
+        }
+
+        .btn-print:hover {
+            background: #1c6691;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Formulaire d'Admission</h1>
+        <h1>📝 Formulaire d'Admission</h1>
 
         <form id="admissionForm">
             <label>Nom et Prénom:</label>
@@ -79,11 +127,11 @@
                 <option value="Suivi Médical">Suivi Médical</option>
             </select>
 
-            <button type="submit">Soumettre</button>
+            <button type="submit" class="btn btn-submit">✅ Soumettre</button>
         </form>
 
-        <button id="printButton" class="hidden" onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
-        <img id="qrCode" class="hidden" src="" alt="QR Code">
+        <button id="printButton" class="btn btn-print" onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
+        <img id="qrCode" style="display: none;" src="" alt="QR Code">
     </div>
 
     <script>
@@ -106,21 +154,21 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert("Patient enregistré avec succès !");
+                alert("✅ Patient enregistré avec succès !");
                 
                 let qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${patientData.cin}`;
                 let qrCodeImage = document.getElementById("qrCode");
-                
+
                 qrCodeImage.onload = function() {
-                    document.getElementById("printButton").classList.remove("hidden"); 
+                    document.getElementById("printButton").style.display = "block"; 
                 };
 
                 qrCodeImage.src = qrURL;
                 document.getElementById("admissionForm").reset();
             })
             .catch(error => {
-                console.error("Erreur:", error);
-                alert("Échec de l'enregistrement du patient.");
+                console.error("❌ Erreur:", error);
+                alert("❌ Échec de l'enregistrement du patient.");
             });
         });
 
@@ -128,7 +176,7 @@
             let qrImage = document.getElementById("qrCode").src;
 
             if (!qrImage || qrImage === "") {
-                alert("QR Code non disponible !");
+                alert("⚠️ QR Code non disponible !");
                 return;
             }
 
