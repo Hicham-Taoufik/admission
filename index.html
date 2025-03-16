@@ -8,7 +8,7 @@
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #003366, #00509E); /* Adjusted to match homepage */
+            background: linear-gradient(to right, #8EC5FC, #E0C3FC); /* Soft gradient for a calm and patient-friendly feel */
             text-align: center;
             margin: 0;
             padding: 0;
@@ -73,7 +73,7 @@
 
         /* Submit Button */
         .btn-submit {
-            background: #00a859;
+            background: #4CAF50;
             color: white;
             font-size: 18px;
             padding: 15px;
@@ -86,7 +86,7 @@
         }
 
         .btn-submit:hover {
-            background: #008f4c;
+            background: #388E3C;
             transform: scale(1.02);
         }
 
@@ -110,46 +110,46 @@
     <div class="container">
         <h1>📝 Formulaire d'Admission</h1>
 
-        <form id="admissionForm">
+        <form id="admissionForm" action="https://workflows.aphelionxinnovations.com/webhook-test/admission" method="POST">
             <div class="form-grid">
                 <div>
                     <label>Nom:</label>
-                    <input type="text" id="nom" required>
+                    <input type="text" id="nom" name="nom" required>
                 </div>
 
                 <div>
                     <label>Prénom:</label>
-                    <input type="text" id="prenom" required>
+                    <input type="text" id="prenom" name="prenom" required>
                 </div>
 
                 <div>
                     <label>Numéro d'Identification (CIN):</label>
-                    <input type="text" id="cin">
+                    <input type="text" id="cin" name="cin">
                 </div>
 
                 <div>
                     <label>Téléphone:</label>
-                    <input type="text" id="telephone" required>
+                    <input type="text" id="telephone" name="telephone" required>
                 </div>
 
                 <div class="full-width">
                     <label>Adresse:</label>
-                    <textarea id="adresse"></textarea>
+                    <textarea id="adresse" name="adresse"></textarea>
                 </div>
 
                 <div>
                     <label>Ville:</label>
-                    <input type="text" id="ville">
+                    <input type="text" id="ville" name="ville">
                 </div>
 
                 <div>
                     <label>Date de Naissance:</label>
-                    <input type="date" id="dob" required>
+                    <input type="date" id="dob" name="dob" required>
                 </div>
 
                 <div>
                     <label>Sexe:</label>
-                    <select id="sexe" required>
+                    <select id="sexe" name="sexe" required>
                         <option value="M">Masculin</option>
                         <option value="F">Féminin</option>
                     </select>
@@ -157,7 +157,7 @@
 
                 <div>
                     <label>Avez-vous une mutuelle ?</label>
-                    <select id="mutuelle" onchange="toggleInsuranceField()">
+                    <select id="mutuelle" name="mutuelle" onchange="toggleInsuranceField()">
                         <option value="Non">Non</option>
                         <option value="Oui">Oui</option>
                     </select>
@@ -165,12 +165,12 @@
 
                 <div class="full-width" id="insuranceField" style="display: none;">
                     <label>Nom de la Mutuelle:</label>
-                    <input type="text" id="insuranceName">
+                    <input type="text" id="insuranceName" name="insuranceName">
                 </div>
 
                 <div class="full-width">
                     <label>Motif de Consultation:</label>
-                    <select id="consultation">
+                    <select id="consultation" name="consultation">
                         <option value="Consultation">Consultation</option>
                         <option value="Urgence">Urgence</option>
                         <option value="Suivi Médical">Suivi Médical</option>
