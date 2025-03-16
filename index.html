@@ -17,37 +17,38 @@
         /* Logo Styling */
         .logo-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            margin-bottom: 10px;
         }
 
         .logo-container img {
-            width: 180px; /* Adjust size */
+            width: 220px; /* Slightly larger */
             height: auto;
         }
 
         /* Form Container */
         .container {
             width: 90%;
-            max-width: 600px;
+            max-width: 650px; /* Increased width for better spacing */
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.3);
             margin: auto;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         h1 {
             color: #2C3E50;
-            font-size: 22px;
-            margin-bottom: 15px;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         /* Form Grid Layout */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px; /* Slightly increased gap for better readability */
         }
 
         /* Full-width fields */
@@ -66,7 +67,7 @@
 
         input, textarea, select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 14px;
@@ -83,14 +84,17 @@
         /* Buttons */
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-top: 15px;
-            font-size: 16px;
+            font-size: 18px; /* Slightly larger for better visibility */
             font-weight: bold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-submit {
@@ -102,10 +106,14 @@
             background: #219150;
         }
 
+        .btn-submit i {
+            margin-right: 10px;
+        }
+
         /* Responsive Design */
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .form-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Stack on mobile */
             }
         }
     </style>
@@ -189,7 +197,9 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-submit">✅ Soumettre</button>
+            <button type="submit" class="btn btn-submit">
+                ✅ Soumettre
+            </button>
         </form>
     </div>
 
