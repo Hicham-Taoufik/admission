@@ -1,93 +1,218 @@
-<form id="admissionForm">
-    <label>Nom:</label>
-    <input type="text" id="nom" required>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Admission - Clinique Nakhil</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-    <label>Prénom:</label>
-    <input type="text" id="prenom" required>
+        /* Logo Styling */
+        .logo-container {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-    <label>Numéro d'Identification (CIN):</label>
-    <input type="text" id="cin">
+        .logo-container img {
+            width: 180px; /* Adjust size */
+            height: auto;
+        }
 
-    <label>Adresse:</label>
-    <textarea id="address"></textarea>
+        /* Form Container */
+        .container {
+            width: 90%;
+            max-width: 550px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.3);
+            margin: auto;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-    <label>Ville:</label>
-    <input type="text" id="ville">
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    <label>Téléphone:</label>
-    <input type="text" id="phone" required>
+        h1 {
+            color: #2C3E50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
-    <label>Date de Naissance:</label>
-    <input type="date" id="dob" required>
+        /* Input Fields */
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #2C3E50;
+        }
 
-    <label>Sexe:</label>
-    <select id="sexe">
-        <option value="M">Masculin</option>
-        <option value="F">Féminin</option>
-    </select>
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+            background: #f9f9f9;
+        }
 
-    <label>Avez-vous une mutuelle ?</label>
-    <select id="mutuelle" onchange="toggleMutuelleField()">
-        <option value="Non">Non</option>
-        <option value="Oui">Oui</option>
-    </select>
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+        }
 
-    <div id="mutuelleDiv" style="display: none;">
-        <label>Nom de la Mutuelle:</label>
-        <select id="mutuelle_nom">
-            <option value="CNOPS">CNOPS</option>
-            <option value="CNSS">CNSS</option>
-            <option value="Autre">Autre</option>
-        </select>
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #219150;
+        }
+
+        .btn-print {
+            background: #2980b9;
+            color: white;
+            display: none;
+        }
+
+        .btn-print:hover {
+            background: #1c6691;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo Section -->
+    <div class="logo-container">
+        <img src="logo.webp" alt="Clinique Logo">
     </div>
 
-    <label>Motif de Consultation:</label>
-    <select id="consultation">
-        <option value="Consultation">Consultation</option>
-        <option value="Urgence">Urgence</option>
-        <option value="Suivi Médical">Suivi Médical</option>
-    </select>
+    <!-- Form Container -->
+    <div class="container">
+        <h1>📝 Formulaire d'Admission</h1>
 
-    <button type="submit" class="btn btn-submit">✅ Soumettre</button>
-</form>
+        <form id="admissionForm">
+            <label>Nom:</label>
+            <input type="text" id="nom" required>
 
-<script>
-    function toggleMutuelleField() {
-        let mutuelleValue = document.getElementById("mutuelle").value;
-        document.getElementById("mutuelleDiv").style.display = (mutuelleValue === "Oui") ? "block" : "none";
-    }
+            <label>Prénom:</label>
+            <input type="text" id="prenom" required>
 
-    document.getElementById("admissionForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        const patientData = {
-            nom: document.getElementById("nom").value,
-            prenom: document.getElementById("prenom").value,
-            cin: document.getElementById("cin").value,
-            address: document.getElementById("address").value,
-            ville: document.getElementById("ville").value,
-            phone: document.getElementById("phone").value,
-            dob: document.getElementById("dob").value,
-            sexe: document.getElementById("sexe").value,
-            mutuelle: document.getElementById("mutuelle").value,
-            mutuelle_nom: document.getElementById("mutuelle_nom").value || null,
-            consultation: document.getElementById("consultation").value
-        };
+            <label>Numéro d'Identification (CIN):</label>
+            <input type="text" id="cin">
 
-        fetch("https://workflows.aphelionxinnovations.com/webhook-test/admission", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(patientData)
-        })
-        .then(response => response.json())
-        .then(data => {
+            <label>Adresse:</label>
+            <textarea id="adresse"></textarea>
+
+            <label>Ville:</label>
+            <input type="text" id="ville">
+
+            <label>Téléphone:</label>
+            <input type="text" id="telephone" required>
+
+            <label>Date de Naissance:</label>
+            <input type="date" id="dob" required>
+
+            <label>Sexe:</label>
+            <select id="sexe" required>
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
+            </select>
+
+            <label>Avez-vous une mutuelle ?</label>
+            <select id="mutuelle" onchange="toggleInsuranceField()">
+                <option value="Non">Non</option>
+                <option value="Oui">Oui</option>
+            </select>
+
+            <div id="insuranceField" style="display: none;">
+                <label>Nom de la Mutuelle:</label>
+                <input type="text" id="insuranceName">
+            </div>
+
+            <label>Motif de Consultation:</label>
+            <select id="consultation">
+                <option value="Consultation">Consultation</option>
+                <option value="Urgence">Urgence</option>
+                <option value="Suivi Médical">Suivi Médical</option>
+            </select>
+
+            <button type="submit" class="btn btn-submit">✅ Soumettre</button>
+        </form>
+
+        <button id="printButton" class="btn btn-print" onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
+        <img id="qrCode" style="display: none;" src="" alt="QR Code">
+    </div>
+
+    <script>
+        function toggleInsuranceField() {
+            let mutuelle = document.getElementById("mutuelle").value;
+            let insuranceField = document.getElementById("insuranceField");
+            insuranceField.style.display = (mutuelle === "Oui") ? "block" : "none";
+        }
+
+        document.getElementById("admissionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const patientData = {
+                nom: document.getElementById("nom").value,
+                prenom: document.getElementById("prenom").value,
+                cin: document.getElementById("cin").value,
+                adresse: document.getElementById("adresse").value,
+                ville: document.getElementById("ville").value,
+                telephone: document.getElementById("telephone").value,
+                dob: document.getElementById("dob").value,
+                sexe: document.getElementById("sexe").value,
+                mutuelle: document.getElementById("mutuelle").value,
+                insuranceName: document.getElementById("insuranceName").value,
+                consultation: document.getElementById("consultation").value
+            };
+
+            console.log(patientData);
             alert("✅ Patient enregistré avec succès !");
-            document.getElementById("admissionForm").reset();
-            document.getElementById("mutuelleDiv").style.display = "none";
-        })
-        .catch(error => {
-            console.error("❌ Erreur:", error);
-            alert("❌ Échec de l'enregistrement du patient.");
         });
-    });
-</script>
+
+        function printQRCode() {
+            alert("⚠️ QR Code printing is not yet implemented!");
+        }
+    </script>
+
+</body>
+</html>
