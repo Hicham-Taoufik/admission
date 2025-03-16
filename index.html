@@ -8,7 +8,7 @@
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            background: linear-gradient(to right, #d4fc79, #96e6a1);
             text-align: center;
             margin: 0;
             padding: 0;
@@ -18,7 +18,7 @@
         .logo-container {
             text-align: center;
             margin-top: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .logo-container img {
@@ -28,37 +28,37 @@
 
         /* Form Container */
         .container {
-            width: 95%;
-            max-width: 700px;
+            width: 80%;
+            max-width: 850px;
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
             margin: auto;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         h1 {
             color: #2C3E50;
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 20px;
         }
 
         /* Form Grid Layout */
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 14px;
         }
 
         .full-width {
-            grid-column: span 2;
+            grid-column: span 3;
         }
 
         label {
             font-weight: bold;
             text-align: left;
-            font-size: 14px;
+            font-size: 13px;
             color: #2C3E50;
             display: block;
             margin-bottom: 5px;
@@ -66,33 +66,34 @@
 
         input, textarea, select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
             transition: 0.3s;
             background: #f9f9f9;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: #3498db;
+            border-color: #2ecc71;
             outline: none;
-            box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+            box-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5);
         }
 
         textarea {
-            min-height: 60px; /* Adjusted */
+            min-height: 80px;
+            resize: vertical;
         }
 
         /* Buttons */
         .btn {
             width: 100%;
             padding: 14px;
-            margin-top: 18px;
+            margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
@@ -103,10 +104,12 @@
         .btn-submit {
             background: #27ae60;
             color: white;
+            font-size: 18px;
         }
 
         .btn-submit:hover {
             background: #219150;
+            transform: scale(1.03);
         }
 
         .btn-submit i {
@@ -114,7 +117,13 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 650px) {
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -145,23 +154,13 @@
                 </div>
 
                 <div>
-                    <label>Numéro d'Identification (CIN):</label>
-                    <input type="text" id="cin">
-                </div>
-
-                <div>
                     <label>Téléphone:</label>
                     <input type="text" id="telephone" required>
                 </div>
 
-                <div class="full-width">
-                    <label>Adresse:</label>
-                    <textarea id="adresse"></textarea>
-                </div>
-
                 <div>
-                    <label>Ville:</label>
-                    <input type="text" id="ville">
+                    <label>Numéro d'Identification (CIN):</label>
+                    <input type="text" id="cin">
                 </div>
 
                 <div>
@@ -175,6 +174,16 @@
                         <option value="M">Masculin</option>
                         <option value="F">Féminin</option>
                     </select>
+                </div>
+
+                <div class="full-width">
+                    <label>Adresse:</label>
+                    <textarea id="adresse"></textarea>
+                </div>
+
+                <div>
+                    <label>Ville:</label>
+                    <input type="text" id="ville">
                 </div>
 
                 <div>
@@ -212,27 +221,6 @@
             let insuranceField = document.getElementById("insuranceField");
             insuranceField.style.display = (mutuelle === "Oui") ? "block" : "none";
         }
-
-        document.getElementById("admissionForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            const patientData = {
-                nom: document.getElementById("nom").value,
-                prenom: document.getElementById("prenom").value,
-                cin: document.getElementById("cin").value,
-                adresse: document.getElementById("adresse").value,
-                ville: document.getElementById("ville").value,
-                telephone: document.getElementById("telephone").value,
-                dob: document.getElementById("dob").value,
-                sexe: document.getElementById("sexe").value,
-                mutuelle: document.getElementById("mutuelle").value,
-                insuranceName: document.getElementById("insuranceName").value,
-                consultation: document.getElementById("consultation").value
-            };
-
-            console.log(patientData);
-            alert("✅ Patient enregistré avec succès !");
-        });
     </script>
 
 </body>
