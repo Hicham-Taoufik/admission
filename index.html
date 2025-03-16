@@ -14,55 +14,48 @@
             padding: 0;
         }
 
-        /* Logo Styling */
-        .logo-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .logo-container img {
-            width: 180px; /* Adjust size */
-            height: auto;
-        }
-
         /* Form Container */
         .container {
             width: 90%;
-            max-width: 550px;
+            max-width: 600px;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 6px 15px rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
             margin: auto;
             margin-top: 20px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             color: #2C3E50;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin-bottom: 15px;
         }
 
-        /* Input Fields */
+        /* Form Grid Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* Full-width fields */
+        .full-width {
+            grid-column: span 2;
+        }
+
         label {
             font-weight: bold;
-            display: block;
             text-align: left;
-            margin-top: 10px;
             font-size: 14px;
             color: #2C3E50;
+            display: block;
+            margin-bottom: 5px;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 14px;
@@ -98,87 +91,90 @@
             background: #219150;
         }
 
-        .btn-print {
-            background: #2980b9;
-            color: white;
-            display: none;
-        }
-
-        .btn-print:hover {
-            background: #1c6691;
-        }
-
         /* Responsive Design */
         @media (max-width: 600px) {
-            .container {
-                width: 95%;
-                padding: 20px;
+            .form-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Logo Section -->
-    <div class="logo-container">
-        <img src="logo.webp" alt="Clinique Logo">
-    </div>
-
     <!-- Form Container -->
     <div class="container">
         <h1>📝 Formulaire d'Admission</h1>
 
         <form id="admissionForm">
-            <label>Nom:</label>
-            <input type="text" id="nom" required>
+            <div class="form-grid">
+                <div>
+                    <label>Nom:</label>
+                    <input type="text" id="nom" required>
+                </div>
 
-            <label>Prénom:</label>
-            <input type="text" id="prenom" required>
+                <div>
+                    <label>Prénom:</label>
+                    <input type="text" id="prenom" required>
+                </div>
 
-            <label>Numéro d'Identification (CIN):</label>
-            <input type="text" id="cin">
+                <div>
+                    <label>Numéro d'Identification (CIN):</label>
+                    <input type="text" id="cin">
+                </div>
 
-            <label>Adresse:</label>
-            <textarea id="adresse"></textarea>
+                <div>
+                    <label>Téléphone:</label>
+                    <input type="text" id="telephone" required>
+                </div>
 
-            <label>Ville:</label>
-            <input type="text" id="ville">
+                <div class="full-width">
+                    <label>Adresse:</label>
+                    <textarea id="adresse"></textarea>
+                </div>
 
-            <label>Téléphone:</label>
-            <input type="text" id="telephone" required>
+                <div>
+                    <label>Ville:</label>
+                    <input type="text" id="ville">
+                </div>
 
-            <label>Date de Naissance:</label>
-            <input type="date" id="dob" required>
+                <div>
+                    <label>Date de Naissance:</label>
+                    <input type="date" id="dob" required>
+                </div>
 
-            <label>Sexe:</label>
-            <select id="sexe" required>
-                <option value="M">Masculin</option>
-                <option value="F">Féminin</option>
-            </select>
+                <div>
+                    <label>Sexe:</label>
+                    <select id="sexe" required>
+                        <option value="M">Masculin</option>
+                        <option value="F">Féminin</option>
+                    </select>
+                </div>
 
-            <label>Avez-vous une mutuelle ?</label>
-            <select id="mutuelle" onchange="toggleInsuranceField()">
-                <option value="Non">Non</option>
-                <option value="Oui">Oui</option>
-            </select>
+                <div>
+                    <label>Avez-vous une mutuelle ?</label>
+                    <select id="mutuelle" onchange="toggleInsuranceField()">
+                        <option value="Non">Non</option>
+                        <option value="Oui">Oui</option>
+                    </select>
+                </div>
 
-            <div id="insuranceField" style="display: none;">
-                <label>Nom de la Mutuelle:</label>
-                <input type="text" id="insuranceName">
+                <div id="insuranceField" style="display: none;">
+                    <label>Nom de la Mutuelle:</label>
+                    <input type="text" id="insuranceName">
+                </div>
+
+                <div class="full-width">
+                    <label>Motif de Consultation:</label>
+                    <select id="consultation">
+                        <option value="Consultation">Consultation</option>
+                        <option value="Urgence">Urgence</option>
+                        <option value="Suivi Médical">Suivi Médical</option>
+                    </select>
+                </div>
             </div>
-
-            <label>Motif de Consultation:</label>
-            <select id="consultation">
-                <option value="Consultation">Consultation</option>
-                <option value="Urgence">Urgence</option>
-                <option value="Suivi Médical">Suivi Médical</option>
-            </select>
 
             <button type="submit" class="btn btn-submit">✅ Soumettre</button>
         </form>
-
-        <button id="printButton" class="btn btn-print" onclick="printQRCode()">🖨️ Imprimer le QR Code</button>
-        <img id="qrCode" style="display: none;" src="" alt="QR Code">
     </div>
 
     <script>
@@ -208,10 +204,6 @@
             console.log(patientData);
             alert("✅ Patient enregistré avec succès !");
         });
-
-        function printQRCode() {
-            alert("⚠️ QR Code printing is not yet implemented!");
-        }
     </script>
 
 </body>
