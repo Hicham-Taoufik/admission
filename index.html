@@ -28,8 +28,8 @@
 
         /* Form Container */
         .container {
-            width: 80%;
-            max-width: 850px;
+            width: 85%;
+            max-width: 750px;
             background: white;
             padding: 25px;
             border-radius: 12px;
@@ -47,18 +47,18 @@
         /* Form Grid Layout */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         .full-width {
-            grid-column: span 3;
+            grid-column: span 2;
         }
 
         label {
             font-weight: bold;
             text-align: left;
-            font-size: 13px;
+            font-size: 14px;
             color: #2C3E50;
             display: block;
             margin-bottom: 5px;
@@ -66,7 +66,7 @@
 
         input, textarea, select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 14px;
@@ -81,7 +81,7 @@
         }
 
         textarea {
-            min-height: 80px;
+            min-height: 60px;
             resize: vertical;
         }
 
@@ -112,18 +112,8 @@
             transform: scale(1.03);
         }
 
-        .btn-submit i {
-            margin-right: 10px;
-        }
-
         /* Responsive Design */
-        @media (max-width: 800px) {
-            .form-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -154,13 +144,23 @@
                 </div>
 
                 <div>
+                    <label>Numéro d'Identification (CIN):</label>
+                    <input type="text" id="cin">
+                </div>
+
+                <div>
                     <label>Téléphone:</label>
                     <input type="text" id="telephone" required>
                 </div>
 
+                <div class="full-width">
+                    <label>Adresse:</label>
+                    <textarea id="adresse"></textarea>
+                </div>
+
                 <div>
-                    <label>Numéro d'Identification (CIN):</label>
-                    <input type="text" id="cin">
+                    <label>Ville:</label>
+                    <input type="text" id="ville">
                 </div>
 
                 <div>
@@ -176,16 +176,6 @@
                     </select>
                 </div>
 
-                <div class="full-width">
-                    <label>Adresse:</label>
-                    <textarea id="adresse"></textarea>
-                </div>
-
-                <div>
-                    <label>Ville:</label>
-                    <input type="text" id="ville">
-                </div>
-
                 <div>
                     <label>Avez-vous une mutuelle ?</label>
                     <select id="mutuelle" onchange="toggleInsuranceField()">
@@ -194,7 +184,7 @@
                     </select>
                 </div>
 
-                <div id="insuranceField" style="display: none;">
+                <div class="full-width" id="insuranceField" style="display: none;">
                     <label>Nom de la Mutuelle:</label>
                     <input type="text" id="insuranceName">
                 </div>
