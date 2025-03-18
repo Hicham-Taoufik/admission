@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire d'Admission</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #8EC5FC, #E0C3FC);
+            background: linear-gradient(to right, #8EC5FC, #E0C3FC); /* Soft gradient for a calm and patient-friendly feel */
             text-align: center;
             margin: 0;
             padding: 0;
@@ -73,7 +72,7 @@
         }
 
         /* Submit Button */
-        .btn-submit, .btn-print {
+        .btn-submit {
             background: #4CAF50;
             color: white;
             font-size: 18px;
@@ -86,19 +85,9 @@
             transition: 0.3s;
         }
 
-        .btn-submit:hover, .btn-print:hover {
+        .btn-submit:hover {
             background: #388E3C;
             transform: scale(1.02);
-        }
-
-        /* QR Code Section */
-        .qr-container {
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-        #qrcode {
-            margin: 15px auto;
         }
 
         /* Responsive Design */
@@ -121,7 +110,7 @@
     <div class="container">
         <h1>📝 Formulaire d'Admission</h1>
 
-        <form id="admissionForm">
+        <form id="admissionForm" action="https://workflows.aphelionxinnovations.com/webhook-test/admission" method="POST">
             <div class="form-grid">
                 <div>
                     <label>Nom:</label>
@@ -135,7 +124,7 @@
 
                 <div>
                     <label>Numéro d'Identification (CIN):</label>
-                    <input type="text" id="cin" name="cin" required>
+                    <input type="text" id="cin" name="cin">
                 </div>
 
                 <div>
@@ -191,13 +180,6 @@
 
             <button type="submit" class="btn-submit">✅ Soumettre</button>
         </form>
-
-        <!-- QR Code Section -->
-        <div class="qr-container" id="qrContainer">
-            <h2>QR Code du Patient</h2>
-            <div id="qrcode"></div>
-            <button class="btn-print" onclick="printQRCode()">🖨️ Imprimer QR Code</button>
-        </div>
     </div>
 
     <script>
@@ -205,35 +187,6 @@
             let mutuelle = document.getElementById("mutuelle").value;
             let insuranceField = document.getElementById("insuranceField");
             insuranceField.style.display = (mutuelle === "Oui") ? "block" : "none";
-        }
-
-        document.getElementById("admissionForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const cin = document.getElementById("cin").value;
-            if (!cin) {
-                alert("Veuillez entrer un CIN valide.");
-                return;
-            }
-
-            // Generate QR Code
-            document.getElementById("qrContainer").style.display = "block";
-            document.getElementById("qrcode").innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: `https://workflows.aphelionxinnovations.com/patient?cin=${cin}`,
-                width: 150,
-                height: 150
-            });
-        });
-
-        function printQRCode() {
-            const qrCodeDiv = document.getElementById("qrcode");
-            const printWindow = window.open('', '', 'width=300,height=300');
-            printWindow.document.write('<html><head><title>QR Code</title></head><body>');
-            printWindow.document.write(qrCodeDiv.innerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
         }
     </script>
 
