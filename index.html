@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire d'Admission</title>
+    <title>Informations du Patient</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         /* General Styling */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #8EC5FC, #E0C3FC); /* Soft gradient for a calm and patient-friendly feel */
+            background: linear-gradient(to right, #8EC5FC, #E0C3FC);
             text-align: center;
             margin: 0;
             padding: 0;
         }
 
-        /* Form Container */
+        /* Main Container */
         .container {
             width: 90%;
             max-width: 900px;
@@ -24,6 +25,7 @@
             box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
             margin: auto;
             margin-top: 30px;
+            text-align: left;
         }
 
         /* Logo */
@@ -36,43 +38,26 @@
             height: auto;
         }
 
-        /* Form Grid Layout */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .full-width {
-            grid-column: span 2;
+        /* Info Display */
+        .info {
+            font-size: 16px;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            color: #333;
+            margin-bottom: 10px;
         }
 
         label {
             font-weight: bold;
-            text-align: left;
             font-size: 16px;
             color: #2C3E50;
             display: block;
-            margin-bottom: 8px;
+            margin-top: 15px;
         }
 
-        input, textarea, select {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 16px;
-            background: #f9f9f9;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #2ecc71;
-            outline: none;
-            box-shadow: 0px 0px 10px rgba(46, 204, 113, 0.5);
-        }
-
-        /* Submit Button */
-        .btn-submit {
+        /* Button Styling */
+        .btn {
             background: #4CAF50;
             color: white;
             font-size: 18px;
@@ -81,114 +66,135 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: 0.3s;
         }
-
-        .btn-submit:hover {
+        .btn:hover {
             background: #388E3C;
             transform: scale(1.02);
         }
 
-        /* Responsive Design */
+        /* QR Code Section */
+        .qr-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+        #qrcode {
+            margin: 15px auto;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
+            .container {
+                padding: 20px;
+            }
+            .btn {
+                font-size: 16px;
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
-    
-    <!-- Logo Section -->
+
+    <!-- Logo -->
     <div class="logo-container">
-        <img src="logo.webp" alt="Clinique Nakhil Logo">
+        <img src="logo.webp" alt="Clinique Logo">
     </div>
 
-    <!-- Form Container -->
+    <!-- Patient Information Container -->
     <div class="container">
-        <h1>📝 Formulaire d'Admission</h1>
+        <h1>📄 Informations du Patient</h1>
 
-        <form id="admissionForm" action="https://workflows.aphelionxinnovations.com/webhook-test/admission" method="POST">
-            <div class="form-grid">
-                <div>
-                    <label>Nom:</label>
-                    <input type="text" id="nom" name="nom" required>
-                </div>
+        <p class="info"><strong>Nom et Prénom :</strong> <span id="name">Chargement...</span></p>
+        <p class="info"><strong>Âge :</strong> <span id="age">Chargement...</span></p>
+        <p class="info"><strong>Motif de Consultation :</strong> <span id="consultation">Chargement...</span></p>
 
-                <div>
-                    <label>Prénom:</label>
-                    <input type="text" id="prenom" name="prenom" required>
-                </div>
+        <!-- QR Code Section -->
+        <div class="qr-container">
+            <h2>QR Code</h2>
+            <div id="qrcode"></div>
+            <button class="btn" onclick="printQRCode()">🖨️ Imprimer QR Code</button>
+        </div>
 
-                <div>
-                    <label>Numéro d'Identification (CIN):</label>
-                    <input type="text" id="cin" name="cin">
-                </div>
-
-                <div>
-                    <label>Téléphone:</label>
-                    <input type="text" id="telephone" name="telephone" required>
-                </div>
-
-                <div class="full-width">
-                    <label>Adresse:</label>
-                    <textarea id="adresse" name="adresse"></textarea>
-                </div>
-
-                <div>
-                    <label>Ville:</label>
-                    <input type="text" id="ville" name="ville">
-                </div>
-
-                <div>
-                    <label>Date de Naissance:</label>
-                    <input type="date" id="dob" name="dob" required>
-                </div>
-
-                <div>
-                    <label>Sexe:</label>
-                    <select id="sexe" name="sexe" required>
-                        <option value="M">Masculin</option>
-                        <option value="F">Féminin</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Avez-vous une mutuelle ?</label>
-                    <select id="mutuelle" name="mutuelle" onchange="toggleInsuranceField()">
-                        <option value="Non">Non</option>
-                        <option value="Oui">Oui</option>
-                    </select>
-                </div>
-
-                <div class="full-width" id="insuranceField" style="display: none;">
-                    <label>Nom de la Mutuelle:</label>
-                    <input type="text" id="insuranceName" name="insuranceName">
-                </div>
-
-                <div class="full-width">
-                    <label>Motif de Consultation:</label>
-                    <select id="consultation" name="consultation">
-                        <option value="Consultation">Consultation</option>
-                        <option value="Urgence">Urgence</option>
-                        <option value="Suivi Médical">Suivi Médical</option>
-                    </select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">✅ Soumettre</button>
+        <h2>🩺 Diagnostic du Médecin</h2>
+        <form id="notesForm">
+            <label>Diagnostic :</label>
+            <textarea id="diagnosis" name="diagnosis" placeholder="Entrez le diagnostic..."></textarea>
+            
+            <label>Prescription :</label>
+            <textarea id="prescription" name="prescription" placeholder="Entrez l'ordonnance..."></textarea>
+            
+            <button type="submit" class="btn">✅ Enregistrer</button>
         </form>
     </div>
 
     <script>
-        function toggleInsuranceField() {
-            let mutuelle = document.getElementById("mutuelle").value;
-            let insuranceField = document.getElementById("insuranceField");
-            insuranceField.style.display = (mutuelle === "Oui") ? "block" : "none";
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientCIN = urlParams.get("cin");
+
+        const webhookURL = `https://workflows.aphelionxinnovations.com/webhook-test/patient-info?cin=${patientCIN}`;
+        
+        fetch(webhookURL)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("name").innerText = data.name || "N/A";
+                document.getElementById("age").innerText = calculateAge(data["Date de Naissance"]) || "N/A";
+                document.getElementById("consultation").innerText = data["Motif de Consultation"] || "N/A";
+
+                // Generate QR Code
+                new QRCode(document.getElementById("qrcode"), {
+                    text: `https://workflows.aphelionxinnovations.com/patient?cin=${patientCIN}`,
+                    width: 150,
+                    height: 150
+                });
+            })
+            .catch(error => console.error("Erreur lors de la récupération des données :", error));
+
+        function calculateAge(birthDate) {
+            if (!birthDate) return "N/A";
+            const birthYear = new Date(birthDate).getFullYear();
+            const currentYear = new Date().getFullYear();
+            return currentYear - birthYear + " ans";
+        }
+
+        document.getElementById("notesForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const notesData = {
+                cin: patientCIN,
+                diagnosis: document.getElementById("diagnosis").value,
+                prescription: document.getElementById("prescription").value
+            };
+
+            const submitNotesURL = "https://workflows.aphelionxinnovations.com/webhook-test/submit-notes";
+            
+            fetch(submitNotesURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(notesData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Notes enregistrées avec succès !");
+                document.getElementById("diagnosis").value = "";
+                document.getElementById("prescription").value = "";
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'enregistrement :", error);
+                alert("Échec de l'enregistrement des notes.");
+            });
+        });
+
+        function printQRCode() {
+            const qrCodeDiv = document.getElementById("qrcode");
+            const printWindow = window.open('', '', 'width=300,height=300');
+            printWindow.document.write('<html><head><title>QR Code</title></head><body>');
+            printWindow.document.write(qrCodeDiv.innerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
         }
     </script>
-
 </body>
 </html>
