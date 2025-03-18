@@ -3,219 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informations du Patient</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>Formulaire d'Admission</title>
     <style>
-        /* General Styles */
+        /* General Styling */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #dfe9f3, #ffffff);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #8EC5FC, #E0C3FC); /* Soft gradient for a calm and patient-friendly feel */
+            text-align: center;
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 0;
         }
 
-        /* Container */
+        /* Form Container */
         .container {
             width: 90%;
-            max-width: 500px;
+            max-width: 900px;
             background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
-            text-align: left;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
+            margin: auto;
+            margin-top: 30px;
         }
 
         /* Logo */
-        .logo {
-            display: block;
-            margin: 0 auto 20px;
-            width: 120px;
-        }
-
-        /* Headings */
-        h1, h2 {
-            color: #2C3E50;
+        .logo-container {
             text-align: center;
-            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            width: 200px;
+            height: auto;
         }
 
-        /* Info Sections */
-        .info {
-            font-size: 16px;
-            margin: 12px 0;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 6px;
-            color: #333;
+        /* Form Grid Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
         }
 
-        /* Labels */
+        .full-width {
+            grid-column: span 2;
+        }
+
         label {
             font-weight: bold;
+            text-align: left;
+            font-size: 16px;
+            color: #2C3E50;
             display: block;
-            margin-top: 12px;
-            font-size: 14px;
-            color: #555;
+            margin-bottom: 8px;
         }
 
-        /* Input & Textareas */
-        textarea {
+        input, textarea, select {
             width: 100%;
-            height: 80px;
-            margin-top: 5px;
-            padding: 10px;
+            padding: 14px;
             border: 1px solid #ccc;
-            border-radius: 6px;
-            resize: none;
-            font-size: 14px;
+            border-radius: 10px;
+            font-size: 16px;
             background: #f9f9f9;
-            transition: 0.3s;
-        }
-        textarea:focus {
-            border-color: #2C7A4B;
-            background: #ffffff;
-            outline: none;
         }
 
-        /* Buttons */
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #2C7A4B;
+        input:focus, textarea:focus, select:focus {
+            border-color: #2ecc71;
+            outline: none;
+            box-shadow: 0px 0px 10px rgba(46, 204, 113, 0.5);
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: #4CAF50;
             color: white;
+            font-size: 18px;
+            padding: 15px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            transition: background 0.3s, transform 0.2s;
-        }
-        button:hover {
-            background: #256B40;
-            transform: translateY(-2px);
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        /* QR Code */
-        .qr-container {
-            text-align: center;
-            margin-top: 15px;
-        }
-        #qrcode {
-            margin: 15px auto;
+        .btn-submit:hover {
+            background: #388E3C;
+            transform: scale(1.02);
         }
 
-        /* Responsive */
-        @media (max-width: 480px) {
-            .container {
-                padding: 18px;
-            }
-            h1, h2 {
-                font-size: 20px;
-            }
-            button {
-                font-size: 14px;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
         }
     </style>
 </head>
 <body>
+    
+    <!-- Logo Section -->
+    <div class="logo-container">
+        <img src="logo.webp" alt="Clinique Nakhil Logo">
+    </div>
 
-    <img src="logo.webp" alt="Clinique Logo" class="logo">  
+    <!-- Form Container -->
     <div class="container">
-        <h1>Informations du Patient</h1>
-        
-        <p class="info"><strong>Nom et Prénom :</strong> <span id="name">Chargement...</span></p>
-        <p class="info"><strong>Âge :</strong> <span id="age">Chargement...</span></p>
-        <p class="info"><strong>Motif de Consultation :</strong> <span id="consultation">Chargement...</span></p>
+        <h1>📝 Formulaire d'Admission</h1>
 
-        <!-- QR Code Section -->
-        <div class="qr-container">
-            <h2>QR Code</h2>
-            <div id="qrcode"></div>
-            <button onclick="printQRCode()">🖨️ Imprimer QR Code</button>
-        </div>
+        <form id="admissionForm" action="https://workflows.aphelionxinnovations.com/webhook-test/admission" method="POST">
+            <div class="form-grid">
+                <div>
+                    <label>Nom:</label>
+                    <input type="text" id="nom" name="nom" required>
+                </div>
 
-        <h2>Diagnostic du Médecin</h2>
-        <form id="notesForm">
-            <label>Diagnostic :</label>
-            <textarea id="diagnosis" name="diagnosis" placeholder="Entrez le diagnostic..."></textarea>
-            
-            <label>Prescription :</label>
-            <textarea id="prescription" name="prescription" placeholder="Entrez l'ordonnance..."></textarea>
-            
-            <button type="submit">Enregistrer</button>
+                <div>
+                    <label>Prénom:</label>
+                    <input type="text" id="prenom" name="prenom" required>
+                </div>
+
+                <div>
+                    <label>Numéro d'Identification (CIN):</label>
+                    <input type="text" id="cin" name="cin">
+                </div>
+
+                <div>
+                    <label>Téléphone:</label>
+                    <input type="text" id="telephone" name="telephone" required>
+                </div>
+
+                <div class="full-width">
+                    <label>Adresse:</label>
+                    <textarea id="adresse" name="adresse"></textarea>
+                </div>
+
+                <div>
+                    <label>Ville:</label>
+                    <input type="text" id="ville" name="ville">
+                </div>
+
+                <div>
+                    <label>Date de Naissance:</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+
+                <div>
+                    <label>Sexe:</label>
+                    <select id="sexe" name="sexe" required>
+                        <option value="M">Masculin</option>
+                        <option value="F">Féminin</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Avez-vous une mutuelle ?</label>
+                    <select id="mutuelle" name="mutuelle" onchange="toggleInsuranceField()">
+                        <option value="Non">Non</option>
+                        <option value="Oui">Oui</option>
+                    </select>
+                </div>
+
+                <div class="full-width" id="insuranceField" style="display: none;">
+                    <label>Nom de la Mutuelle:</label>
+                    <input type="text" id="insuranceName" name="insuranceName">
+                </div>
+
+                <div class="full-width">
+                    <label>Motif de Consultation:</label>
+                    <select id="consultation" name="consultation">
+                        <option value="Consultation">Consultation</option>
+                        <option value="Urgence">Urgence</option>
+                        <option value="Suivi Médical">Suivi Médical</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">✅ Soumettre</button>
         </form>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const patientCIN = urlParams.get("cin");
-
-        const webhookURL = `https://workflows.aphelionxinnovations.com/webhook-test/patient-info?cin=${patientCIN}`;
-        
-        fetch(webhookURL)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("name").innerText = data.name || "N/A";
-                document.getElementById("age").innerText = calculateAge(data["Date de Naissance"]) || "N/A";
-                document.getElementById("consultation").innerText = data["Motif de Consultation"] || "N/A";
-
-                // Generate QR Code with CIN
-                new QRCode(document.getElementById("qrcode"), {
-                    text: `https://workflows.aphelionxinnovations.com/patient?cin=${patientCIN}`,
-                    width: 128,
-                    height: 128
-                });
-            })
-            .catch(error => console.error("Erreur lors de la récupération des données :", error));
-
-        function calculateAge(birthDate) {
-            if (!birthDate) return "N/A";
-            const birthYear = new Date(birthDate).getFullYear();
-            const currentYear = new Date().getFullYear();
-            return currentYear - birthYear + " ans";
-        }
-
-        document.getElementById("notesForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const notesData = {
-                cin: patientCIN,
-                diagnosis: document.getElementById("diagnosis").value,
-                prescription: document.getElementById("prescription").value
-            };
-
-            const submitNotesURL = "https://workflows.aphelionxinnovations.com/webhook-test/submit-notes";
-            
-            fetch(submitNotesURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(notesData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("Notes enregistrées avec succès !");
-                document.getElementById("diagnosis").value = "";
-                document.getElementById("prescription").value = "";
-            })
-            .catch(error => {
-                console.error("Erreur lors de l'enregistrement :", error);
-                alert("Échec de l'enregistrement des notes.");
-            });
-        });
-
-        function printQRCode() {
-            const qrCodeDiv = document.getElementById("qrcode");
-            const printWindow = window.open('', '', 'width=300,height=300');
-            printWindow.document.write('<html><head><title>QR Code</title></head><body>');
-            printWindow.document.write(qrCodeDiv.innerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
+        function toggleInsuranceField() {
+            let mutuelle = document.getElementById("mutuelle").value;
+            let insuranceField = document.getElementById("insuranceField");
+            insuranceField.style.display = (mutuelle === "Oui") ? "block" : "none";
         }
     </script>
+
 </body>
 </html>
