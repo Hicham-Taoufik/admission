@@ -1,0 +1,68 @@
+async function preloadPatientDetails() {
+    const ipp = getQueryParam('ipp');
+    console.log('Fetching patient details for IPP:', ipp); // Log the IPP
+
+    if (ipp) {
+        try {
+            const patientDetails = await getPatientByIPP(ipp);
+            console.log('API Response:', patientDetails); // Log the API response
+
+            if (patientDetails) {
+                document.getElementById('patient-details').innerHTML = `
+                    <h3>Patient Information</h3>
+                    <p><strong>Nom:</strong> ${patientDetails.nom}</p>
+                    <p><strong>Prénom:</strong> ${patientDetails.prenom}</p>
+                    <p><strong>CIN:</strong> ${patientDetails.cin}</p>
+                    <p><strong>Téléphone:</strong> ${patientDetails.telephone}</p>
+                    <p><strong>Adresse:</strong> ${patientDetails.adresse}</p>
+                    <p><strong>Ville:</strong> ${patientDetails.ville}</p>
+                    <p><strong>Date de Naissance:</strong> ${patientDetails.date_naissance}</p>
+                    <p><strong>Sexe:</strong> ${patientDetails.sexe}</p>
+                    <p><strong>Mutuelle:</strong> ${patientDetails.mutuelle || 'N/A'}</p>
+                `;
+            } else {
+                console.warn('No patient found for IPP:', ipp); // Log a warning
+                document.getElementById('patient-details').innerHTML = `
+                    <p class="error">No patient found with IPP: ${ipp}</p>
+                `;
+            }
+        } catch (error) {
+            console.error('Error fetching patient details:', error); // Log the error
+            document.getElementById('patient-details').innerHTML = `
+                <p class="error">An error occurred while fetching patient details.</p>
+            `;
+        }
+    } else {
+        console.error('No IPP provided in the URL.'); // Log an error
+        document.getElementById('patient-details').innerHTML = `
+            <p class="error">No IPP provided in the URL.</p>
+        `;
+    }
+}
+
+async function getPatientByIPP(ipp) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/doctor-get-patient?ipp=${ipp}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${JWT_TOKEN}`
+            }
+        });
+
+        console.log('API Request URL:', `${API_BASE_URL}/doctor-get-patient?ipp=${ipp}`); // Log the request URL
+        console.log('API Response Status:', response.status); // Log the response status
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('API Response Data:', data); // Log the response data
+            return data;
+        } else {
+            const errorData = await response.json();
+            console.error('API Error:', errorData); // Log the error response
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        console.error('Error fetching patient details:', error); // Log the error
+        alert('An error occurred while fetching patient details.');
+    }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Patient</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Create Patient</h1>
+  </header>
+  <main>
+    <form id="create-patient-form">
+      <label for="nom">Nom:</label>
+      <input type="text" id="nom" name="nom" placeholder="Nom" required />
+
+      <label for="prenom">Prénom:</label>
+      <input type="text" id="prenom" name="prenom" placeholder="Prénom" required />
+
+      <label for="cin">CIN:</label>
+      <input type="text" id="cin" name="cin" placeholder="CIN" required />
+
+      <label for="telephone">Téléphone:</label>
+      <input type="text" id="telephone" name="telephone" placeholder="Téléphone" />
+
+      <label for="adresse">Adresse:</label>
+      <input type="text" id="adresse" name="adresse" placeholder="Adresse" />
+
+      <label for="ville">Ville:</label>
+      <input type="text" id="ville" name="ville" placeholder="Ville" />
+
+      <label for="date_naissance">Date de naissance:</label>
+      <input type="date" id="date_naissance" name="date_naissance" required />
+
+      <label for="sexe">Sexe:</label>
+      <select id="sexe" name="sexe">
+        <option value="M">Masculin</option>
+        <option value="F">Féminin</option>
+      </select>
+
+      <label for="has_insurance">
+        <input type="checkbox" id="has_insurance" name="has_insurance" />
+        A une assurance ?
+      </label>
+
+      <label for="mutuelle">Mutuelle:</label>
+      <input type="text" id="mutuelle" name="mutuelle" placeholder="Mutuelle" />
+
+      <label for="motif_consultation">Motif de consultation:</label>
+      <input type="text" id="motif_consultation" name="motif_consultation" placeholder="Motif de consultation" />
+
+      <button type="submit">Créer</button>
+    </form>
+  </main>
+  <script src="../assets/js/script.js"></script>
+  <script>
+    document.getElementById('create-patient-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const formData = {
+        nom: document.getElementById('nom').value,
+        prenom: document.getElementById('prenom').value,
+        cin: document.getElementById('cin').value,
+        telephone: document.getElementById('telephone').value,
+        adresse: document.getElementById('adresse').value,
+        ville: document.getElementById('ville').value,
+        date_naissance: document.getElementById('date_naissance').value,
+        sexe: document.getElementById('sexe').value,
+        has_insurance: document.getElementById('has_insurance').checked,
+        mutuelle: document.getElementById('mutuelle').value,
+        motif_consultation: document.getElementById('motif_consultation').value
+      };
+
+      try {
+        await createPatient(formData);
+      } catch (error) {
+        console.error('Error creating patient:', error);
+        alert('An error occurred while creating the patient record.');
+      }
+    });
+
+    async function createPatient(formData) {
+      try {
+        console.log('Sending request to create patient:', formData);
+        const response = await fetch(`${API_BASE_URL}/create-patient`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JWT_TOKEN}`
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert('Patient record created successfully!');
+          console.log('API Response:', data);
+          return data;
+        } else {
+          const errorData = await response.json();
+          console.error('API Error:', errorData);
+          alert(`Error: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Error creating patient record:', error);
+        alert('An error occurred while creating the patient record.');
+      }
+    }
+  </script>
+</body>
+</html>

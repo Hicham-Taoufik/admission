@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Doctor Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctor-dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- Notification Area -->
+        <div id="notification" class="hidden"></div>
+
+        <!-- Patient Details Section -->
+        <section>
+            <h2>Patient Information</h2>
+            <div id="patient-details" class="card hidden">
+                <!-- Patient details will be displayed here -->
+            </div>
+        </section>
+
+        <!-- Submit Diagnostic Section -->
+        <section>
+            <h2>Submit Diagnostic</h2>
+            <form id="submit-diagnostic-form">
+                <label for="diagnostic">Diagnostic:</label>
+                <textarea id="diagnostic" name="diagnostic" placeholder="Enter diagnostic" required></textarea>
+                <button type="submit">Submit</button>
+                <button type="button" id="clear-diagnostic">Clear</button>
+            </form>
+        </section>
+
+        <!-- Validate Prescription Section -->
+        <section>
+            <h2>Validate Prescription</h2>
+            <form id="validate-prescription-form">
+                <label for="final-prescription">Prescription:</label>
+                <textarea id="final-prescription" name="final_prescription" placeholder="Enter prescription" required></textarea>
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="start_date" required>
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="end_date" required>
+                <button type="submit">Validate</button>
+                <button type="button" id="clear-prescription">Clear</button>
+            </form>
+        </section>
+
+        <!-- Patient History Section -->
+        <section>
+            <h2>Patient History</h2>
+            <div id="patient-history" class="card hidden">
+                <!-- Patient history will be displayed here -->
+            </div>
+        </section>
+    </main>
+    <script src="../assets/js/doctor-dashboard.js"></script>
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Function to fetch and display patient details
+        async function preloadPatientDetails() {
+            const ipp = getQueryParam('ipp'); // Get IPP from the URL
+            console.log('IPP from URL:', ipp); // Log the IPP
+
+            if (ipp) {
+                try {
+                    const patientDetails = await getPatientByIPP(ipp); // Fetch patient details
+                    console.log('API Response:', patientDetails); // Log the API response
+
+                    if (patientDetails) {
+                        document.getElementById('patient-details').innerHTML = `
+                            <h3>Patient Information</h3>
+                            <p><strong>Nom:</strong> ${patientDetails.nom}</p>
+                            <p><strong>Prénom:</strong> ${patientDetails.prenom}</p>
+                            <p><strong>CIN:</strong> ${patientDetails.cin}</p>
+                            <p><strong>Téléphone:</strong> ${patientDetails.telephone}</p>
+                            <p><strong>Adresse:</strong> ${patientDetails.adresse}</p>
+                            <p><strong>Ville:</strong> ${patientDetails.ville}</p>
+                            <p><strong>Date de Naissance:</strong> ${patientDetails.date_naissance}</p>
+                            <p><strong>Sexe:</strong> ${patientDetails.sexe}</p>
+                            <p><strong>Mutuelle:</strong> ${patientDetails.mutuelle || 'N/A'}</p>
+                        `;
+                    } else {
+                        console.warn('No patient found for IPP:', ipp); // Log a warning
+                        document.getElementById('patient-details').innerHTML = `
+                            <p class="error">No patient found with IPP: ${ipp}</p>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error fetching patient details:', error); // Log the error
+                    document.getElementById('patient-details').innerHTML = `
+                        <p class="error">An error occurred while fetching patient details.</p>
+                    `;
+                }
+            } else {
+                console.error('No IPP provided in the URL.'); // Log an error
+                document.getElementById('patient-details').innerHTML = `
+                    <p class="error">No IPP provided in the URL.</p>
+                `;
+            }
+        }
+
+        // Call the preload function on page load
+        window.onload = preloadPatientDetails;
+    </script>
+</body>
+</html>

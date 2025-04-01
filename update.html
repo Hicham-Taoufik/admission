@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Patient Record</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Update Patient Record</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="create.html">Create Record</a></li>
+                <li><a href="get.html">Get Records</a></li>
+                <li><a href="update.html">Update Record</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form id="update-patient-form">
+            <label for="cin">CIN (Patient Identifier):</label>
+            <input type="text" id="cin" name="cin" required>
+
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom">
+
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom">
+
+            <label for="telephone">Téléphone:</label>
+            <input type="tel" id="telephone" name="telephone">
+
+            <label for="adresse">Adresse:</label>
+            <input type="text" id="adresse" name="adresse">
+
+            <label for="ville">Ville:</label>
+            <input type="text" id="ville" name="ville">
+
+            <label for="date_naissance">Date de Naissance:</label>
+            <input type="date" id="date_naissance" name="date_naissance">
+
+            <label for="sexe">Sexe:</label>
+            <select id="sexe" name="sexe">
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
+            </select>
+
+            <button type="submit">Update Record</button>
+        </form>
+    </main>
+    <script src="../assets/js/script.js"></script>
+    <script>
+        document.getElementById('update-patient-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const cin = document.getElementById('cin').value;
+            const formData = {
+                nom: document.getElementById('nom').value,
+                prenom: document.getElementById('prenom').value,
+                telephone: document.getElementById('telephone').value,
+                adresse: document.getElementById('adresse').value,
+                ville: document.getElementById('ville').value,
+                date_naissance: document.getElementById('date_naissance').value,
+                sexe: document.getElementById('sexe').value
+            };
+
+            try {
+                await updatePatient(cin, formData);
+            } catch (error) {
+                console.error('Error updating patient record:', error);
+                alert('An error occurred while updating the patient record.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Patient Records</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Search Patient Records</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="create.html">Create Record</a></li>
+                <li><a href="get.html">Get Records</a></li>
+                <li><a href="update.html">Update Record</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Search for a Patient</h2>
+        <form id="search-patient-form">
+            <label for="cin">Enter CIN:</label>
+            <input type="text" id="cin" name="cin" required>
+            <button type="submit">Search</button>
+        </form>
+        <div id="patient-info">
+            <!-- Patient information will be displayed here -->
+        </div>
+    </main>
+    <script src="../assets/js/script.js"></script>
+    <script>
+        document.getElementById('search-patient-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const cin = document.getElementById('cin').value;
+            const patientInfoDiv = document.getElementById('patient-info');
+            patientInfoDiv.innerHTML = ''; // Clear previous results
+
+            try {
+                const patient = await getPatientByCIN(cin);
+                if (patient) {
+                    patientInfoDiv.innerHTML = `
+                        <h3>Patient Information</h3>
+                        <p><strong>Nom:</strong> ${patient.nom}</p>
+                        <p><strong>Prénom:</strong> ${patient.prenom}</p>
+                        <p><strong>CIN:</strong> ${patient.cin}</p>
+                        <p><strong>Téléphone:</strong> ${patient.telephone}</p>
+                        <p><strong>Adresse:</strong> ${patient.adresse}</p>
+                        <p><strong>Ville:</strong> ${patient.ville}</p>
+                        <p><strong>Date de Naissance:</strong> ${patient.date_naissance}</p>
+                        <p><strong>Sexe:</strong> ${patient.sexe}</p>
+                        <p><strong>Mutuelle:</strong> ${patient.mutuelle || 'N/A'}</p>
+                    `;
+                } else {
+                    patientInfoDiv.innerHTML = `<p class="error">No patient found with CIN: ${cin}</p>`;
+                }
+            } catch (error) {
+                console.error('Error fetching patient record:', error);
+                patientInfoDiv.innerHTML = `<p class="error">An error occurred while fetching the patient record.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
